@@ -1,0 +1,38 @@
+[
+    {
+        "caption": "Marksy: Convert to Markdown",
+        "command": "marksy_prompt", "args": { "o_format": "markdown" }
+    },
+    {
+        "caption": "Marksy: Convert to Rst",
+        "command": "marksy_prompt", "args": { "o_format": "rst" }
+    },
+    {
+        "caption": "Marksy: Convert to Textile",
+        "command": "marksy_prompt", "args": { "o_format": "textile" }
+    },
+    {
+        "caption": "Marksy: Convert to HTML",
+        "command": "marksy_prompt", "args": { "o_format": "html" }
+    },
+    {
+        "caption": "Marksy: Convert to MediaWiki",
+        "command": "marksy_prompt", "args": { "o_format": "mediawiki" }
+    },
+    {
+        "caption": "Marksy: Convert to Jira (Confluence)",
+        "command": "marksy_prompt", "args": { "o_format": "jira" },
+    },
+    {
+        "caption": "Marksy: Convert to Googlecode",
+        "command": "marksy_prompt", "args": { "o_format": "googlecode" }
+    },
+    {
+        "caption": "Marksy: Convert to Moinmoin",
+        "command": "marksy_prompt", "args": { "o_format": "moinmoin" }
+    },
+    {
+        "caption": "Marksy: Convert to Trac",
+        "command": "marksy_prompt", "args": { "o_format": "trac" }
+    },
+]
