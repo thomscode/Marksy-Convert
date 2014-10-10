@@ -21,7 +21,7 @@
     },
     {
         "caption": "Marksy Convert: Convert to Jira (Confluence)",
-        "command": "marksy_prompt", "args": { "o_format": "jira" },
+        "command": "marksy_prompt", "args": { "o_format": "jira" }
     },
     {
         "caption": "Marksy Convert: Convert to Googlecode",
@@ -34,5 +34,5 @@
     {
         "caption": "Marksy Convert: Convert to Trac",
         "command": "marksy_prompt", "args": { "o_format": "trac" }
-    },
+    }
 ]
