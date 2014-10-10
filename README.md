@@ -5,16 +5,14 @@ Sublime Text plugin that uses [Marksy API](http://marksy.arc90.com/) to convert 
 
 ## Installation
 
-<!--
 ### Package Control
 The preferred method of installation is via Sublime Package Control.
 
 Install via Sublime Package Control
 
-- From inside Sublime Text, open Package Control's Command Pallet: CTRL SHIFT P (Windows, Linux) or CMD SHIFT P on Mac.
+- From inside Sublime Text, open Package Control's Command Pallet: super + shift + p.
 - Type install package and press Return. A list of available packages will be displayed.
 - Type Marksy Convert and press Return. The package will be downloaded to the appropriate directory.
--->
 
 ### Manual Installation
 
