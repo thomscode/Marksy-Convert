@@ -23,7 +23,7 @@ Download or clone [this repository](https://github.com/thomscode/Marksy-Convert)
 
 ## Usage:
 - Create a new file and type some markup, or open a markup file.
-- Open the Command Pallet: CTRL SHIFT P (Windows, Linux) or CMD SHIFT P on Mac.
+- Open the Command Pallet: super + shift + p
 - Type Marksy Convert and select the markup language you want to convert your text into.
 - The plugin attempts to detect the markup language you are converting from
   - If the detected language is incorrect or not selected, select the proper language
