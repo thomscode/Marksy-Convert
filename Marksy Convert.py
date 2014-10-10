@@ -115,7 +115,7 @@ class MarksyCommand(sublime_plugin.TextCommand):
 
 	def launch(self, edit, thread, title, i=0, direction=1):
 		if not thread.is_alive():
-			self.view.set_status('marksy','')
+			self.view.erase_status('marksy')
 			if thread.result == False:
 				display_message("There was an error converting the text.")
 			else:
@@ -130,7 +130,7 @@ class MarksyCommand(sublime_plugin.TextCommand):
 				direction = 1
 			i += direction
 
-			self.view.set_status("marksy", "Marksy [%s=%s]" % (' ' * before, ' ' * after))
+			self.view.set_status("marksy", "Marksy Convert [%s=%s]" % (' ' * before, ' ' * after))
 			sublime.set_timeout(lambda: self.launch(edit, thread, title, i, direction), 100)
 
 
