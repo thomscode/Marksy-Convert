@@ -38,13 +38,17 @@ class MarksyPromptCommand(sublime_plugin.WindowCommand):
 
 		inputs = ['Markdown','Github Flavored Markdown (GFM)','reStructuredText','Textile','HTML','Mediawiki','Jira (Confluence)']
 		input_list = []
-		text = 'Convert from: {}'
+		text = 'Convert from: {0}'
 		for i in inputs:
 			input_list.append(text.format(i))
 
 		index = self.get_syntax(self.window.active_view())
 
-		self.window.show_quick_panel(input_list, self.on_done, selected_index=index)
+		if int(sublime.version()) >= 3000:
+			self.window.show_quick_panel(input_list, self.on_done, selected_index=index)
+		else:
+			self.window.show_quick_panel(input_list, self.on_done)
+
 
 	def on_done(self, i):
 		if i == -1:
