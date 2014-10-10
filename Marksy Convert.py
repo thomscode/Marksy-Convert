@@ -8,10 +8,14 @@ import threading
 
 import json
 
-if int(sublime.version()) >= 3000:
+def is_ST3():
+	""" Check if ST3 based on sublime build """
+	return int(sublime.version()) >= 3000
+
+if is_ST3():
 	from . import requests
 else:
-	sys.path.append('{0}/Marksy'.format(sublime.packages_path()))
+	# sys.path.append('{0}/Marksy'.format(sublime.packages_path()))
 	import requests
 
 global input_formats
