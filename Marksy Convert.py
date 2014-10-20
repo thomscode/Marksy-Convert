@@ -12,11 +12,10 @@ def is_ST3():
 	""" Check if ST3 based on sublime build """
 	return int(sublime.version()) >= 3000
 
-if is_ST3():
-	from . import requests
-else:
-	# sys.path.append('{0}/Marksy'.format(sublime.packages_path()))
-	import requests
+import urllib
+
+if not is_ST3():
+	import urllib2
 
 global input_formats
 global output_formats
@@ -166,7 +165,6 @@ class MarksyApiCall(threading.Thread):
 		threading.Thread.__init__(self)
 
 	def run(self):
-		# print("GOT HERE")
 		if self.input not in input_formats:
 			display_message('Invalid Input format')
 			return
@@ -182,7 +180,7 @@ class MarksyApiCall(threading.Thread):
 		}
 
 		# Convert to json
-		payload = json.dumps(payload)
+		data = json.dumps(payload)
 
 		# Setup HTTP headers
 		headers = {
@@ -190,18 +188,29 @@ class MarksyApiCall(threading.Thread):
 			'Accept': 'application/json'
 		}
 
+		# Encode the data
+		data = data.encode('utf-8')
+
 		# Create and send the request
-		r = requests.post(url, data=payload, headers=headers)
-
-		# Parse the response
-		self.status_code = r.status_code
-		if r.status_code == 200:
-			response = r.json()
-			self.result = response['payload']
-			return
+		if is_ST3():
+			r = urllib.request.Request(url, data, headers)
+			try:
+				response = urllib.request.urlopen(r)
+				self.result = json.loads(response.read().decode('utf-8'))
+				self.result = self.result['payload']
+				return
+			except Exception as e:
+				self.result = False
+				raise e
+				return
 		else:
-			self.result = False
-			self.error = r.json()['error']
-			return
-
-
+			r = urllib2.Request(url, data, headers)
+			try:
+				response = urllib2.urlopen(r)
+				self.result = json.loads(response.read())
+				self.result = self.result['payload']
+				return
+			except Exception as e:
+				self.result = False
+				raise e
+				return
