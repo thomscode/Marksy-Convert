@@ -8,14 +8,15 @@ import threading
 
 import json
 
-def is_ST3():
-	""" Check if ST3 based on sublime build """
-	return int(sublime.version()) >= 3000
+global is_py3
+is_py3 = sys.version_info >= (3, 0)
 
-import urllib
 
-if not is_ST3():
-	import urllib2
+if is_py3:
+	from urllib.request import Request, urlopen
+	from urllib.error import URLError
+else:
+	from urllib2 import Request, urlopen, URLError
 
 global input_formats
 global output_formats
@@ -94,17 +95,10 @@ class MarksyCommand(sublime_plugin.TextCommand):
 	""" Use Marksy API to convert between various markup languages """
 
 	def run(self, edit, i_format, o_format):
-		global settings
 		settings = sublime.load_settings("Marksy.sublime-settings")
 		filename = self.get_file_name(self.view)
 		title = '{0}.{1}'.format(filename, ext[o_format])
 		contents = self.view.substr(sublime.Region(0, self.view.size()))
-
-		encoding = self.view.encoding()
-		if encoding == 'Undefined':
-			encoding = 'utf-8'
-		elif encoding == 'Western (Windows 1252)':
-			encoding = 'windows-1252'
 
 		# Run the following in a new thread
 		t1 = MarksyApiCall({'input': i_format, 'output': o_format}, contents)
@@ -118,7 +112,8 @@ class MarksyCommand(sublime_plugin.TextCommand):
 		if file_name == None:
 			return 'Untitled'
 		else:
-			return file_name.split('/')[-1].split('.')[0]
+			split_char = '/' if sublime.platform() != 'windows' else '\\'
+			return file_name.split(split_char)[-1].split('.')[0]
 
 	def launch(self, edit, thread, title, i=0, direction=1):
 		if not thread.is_alive():
@@ -192,25 +187,22 @@ class MarksyApiCall(threading.Thread):
 		data = data.encode('utf-8')
 
 		# Create and send the request
-		if is_ST3():
-			r = urllib.request.Request(url, data, headers)
-			try:
-				response = urllib.request.urlopen(r)
+		r = Request(url, data, headers)
+		try:
+			response = urlopen(r)
+
+			if is_py3:
 				self.result = json.loads(response.read().decode('utf-8'))
-				self.result = self.result['payload']
-				return
-			except Exception as e:
-				self.result = False
-				raise e
-				return
-		else:
-			r = urllib2.Request(url, data, headers)
-			try:
-				response = urllib2.urlopen(r)
+			else:
 				self.result = json.loads(response.read())
-				self.result = self.result['payload']
-				return
-			except Exception as e:
-				self.result = False
-				raise e
-				return
+
+			self.result = self.result['payload']
+			return
+		except URLError as e:
+			self.result = False
+			self.error = e.reason
+			return
+		except:
+			self.result = False
+			self.error = True
+			raise
